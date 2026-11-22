@@ -2035,6 +2035,16 @@ Return ONLY valid JSON:
     color: #ffd5d2;
     background: rgba(217, 67, 43, 0.35);
   }
+  .mob-timer.paused {
+    color: #ffe082;
+    background: rgba(244, 180, 0, 0.22);
+    border: 1px solid rgba(244, 180, 0, 0.55);
+    animation: timerPauseBlink 1.3s ease-in-out infinite;
+  }
+  @keyframes timerPauseBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.45; }
+  }
 
   .mob-mode-tag {
     display: none;
@@ -2166,6 +2176,14 @@ Return ONLY valid JSON:
     white-space: nowrap;
   }
   .timer-box.low { color: #c62828; }
+  .timer-box.paused {
+    color: #9a5b00;
+    background: #fff7db;
+    border: 1px solid #f0c966;
+    padding: 2px 8px;
+    border-radius: 4px;
+    animation: timerPauseBlink 1.3s ease-in-out infinite;
+  }
 
   .q-meta-bar {
     padding: 6px 14px;
@@ -2207,6 +2225,10 @@ Return ONLY valid JSON:
     font-size: 12px;
     color: var(--cbt-muted);
     font-variant-numeric: tabular-nums;
+  }
+  .q-live-timer.paused {
+    color: #9a5b00;
+    font-weight: 600;
   }
 
   .q-scroll {
@@ -4086,16 +4108,19 @@ function enterExamConsole(isResume) {
   clearInterval(tickInterval);
   tickInterval = setInterval(() => {
     if (examFinished) return;
+    if (isTimerPaused()) return;
     remainingSec--;
-    if (!(testMode === "instant" && qStates[currentIdx].checked)) {
-      qStates[currentIdx].timeSpent += 1;
-    }
+    qStates[currentIdx].timeSpent += 1;
     updateTimersUI();
     persistActiveProgress();
     if (remainingSec <= 0) {
       finalizeExam();
     }
   }, 1000);
+}
+
+function isTimerPaused() {
+  return testMode === "instant" && !!(qStates[currentIdx] && qStates[currentIdx].checked);
 }
 
 function startTest() {
@@ -4127,19 +4152,26 @@ function updateTimersUI() {
   const mobTimerEl = document.getElementById("mob-timer");
   const lowThresh = Math.min(300, Math.max(60, Math.floor(TOTAL_EXAM_SECONDS * 0.15)));
   const clockStr = formatClock(remainingSec);
-  const isLow = remainingSec <= lowThresh;
-  timerEl.textContent = "Time Left: " + clockStr;
+  const paused = isTimerPaused();
+  const isLow = !paused && remainingSec <= lowThresh;
+
+  timerEl.textContent = paused ? ("⏸ Paused: " + clockStr) : ("Time Left: " + clockStr);
+  timerEl.classList.toggle("paused", paused);
   timerEl.classList.toggle("low", isLow);
+  timerEl.title = paused ? "Timer paused while reviewing this solution" : "";
+
   if (mobTimerEl) {
-    mobTimerEl.textContent = clockStr;
+    mobTimerEl.textContent = paused ? ("⏸ " + clockStr) : clockStr;
+    mobTimerEl.classList.toggle("paused", paused);
     mobTimerEl.classList.toggle("low", isLow);
   }
 
   const st = qStates[currentIdx];
   const qTimerEl = document.getElementById("q-live-timer");
-  qTimerEl.textContent = (testMode === "instant" && st.checked)
-    ? ("Solved in: " + formatSec(st.timeSpent))
+  qTimerEl.textContent = paused
+    ? ("⏸ Solved in: " + formatSec(st.timeSpent))
     : ("Time on Q: " + formatSec(st.timeSpent));
+  qTimerEl.classList.toggle("paused", paused);
 }
 
 /* =========================================================================
