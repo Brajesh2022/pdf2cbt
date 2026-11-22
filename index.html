@@ -3247,7 +3247,7 @@ Return ONLY valid JSON:
     .q-stem { font-size: 14.5px; margin-bottom: 12px; }
     .options-list { gap: 8px; }
     .opt-item { padding: 9px 11px; gap: 9px; }
-    .action-bar { padding: 6px 9px; flex-wrap: wrap; gap: 6px; }
+    .action-bar { padding: 6px 9px; gap: 6px; }
     .action-left, .action-right { gap: 6px; }
     .action-bar .btn { padding: 7px 10px; font-size: 12px; }
     .options-list.image-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -3274,6 +3274,32 @@ Return ONLY valid JSON:
     .res-title-eyebrow { display: block; }
   }
 
+  .lbl-mob { display: none; }
+
+  @media (max-width: 680px) {
+    /* Single-row 4-button action bar with clean 2-line labels (no stacked Clear/Save misclicks!) */
+    .action-bar {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 5px;
+      padding: 6px 7px;
+    }
+    .action-left, .action-right { display: contents; }
+    .action-bar .btn {
+      padding: 6px 4px;
+      font-size: 11px;
+      line-height: 1.22;
+      white-space: normal;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .action-bar .lbl-desk { display: none; }
+    .action-bar .lbl-mob { display: block; }
+  }
+
   @media (max-width: 640px) {
     .result-wrap { padding: 12px 10px 32px; gap: 12px; }
     .res-header { padding: 12px 14px; gap: 8px; }
@@ -3296,8 +3322,6 @@ Return ONLY valid JSON:
     .rev-body { padding: 11px 12px; font-size: 13.5px; }
     .rev-ans-row { padding: 8px 10px; gap: 8px 12px; font-size: 12.5px; }
     .rev-opt-toggle { margin-left: 0; width: 100%; justify-content: center; }
-    .action-left, .action-right { width: 100%; justify-content: space-between; }
-    .action-left .btn, .action-right .btn { flex: 1; text-align: center; }
   }
 </style>
 </head>
@@ -3437,12 +3461,24 @@ Return ONLY valid JSON:
 
       <div class="action-bar">
         <div class="action-left">
-          <button class="btn btn-outline" id="btn-review" onclick="markForReviewAndNext()">Mark for Review &amp; Next</button>
-          <button class="btn btn-outline" id="btn-clear" onclick="clearResponse()">Clear Response</button>
+          <button class="btn btn-outline" id="btn-review" onclick="markForReviewAndNext()">
+            <span class="lbl-desk">Mark for Review &amp; Next</span>
+            <span class="lbl-mob">Mark for<br>Review</span>
+          </button>
+          <button class="btn btn-outline" id="btn-clear" onclick="clearResponse()">
+            <span class="lbl-desk">Clear Response</span>
+            <span class="lbl-mob">Clear<br>Response</span>
+          </button>
         </div>
         <div class="action-right">
-          <button class="btn btn-outline" id="btn-prev" onclick="navigateTo(currentIdx - 1)">← Previous</button>
-          <button class="btn btn-primary" id="btn-primary-action" onclick="handlePrimaryAction()">Save &amp; Next</button>
+          <button class="btn btn-outline" id="btn-prev" onclick="navigateTo(currentIdx - 1)">
+            <span class="lbl-desk">← Previous</span>
+            <span class="lbl-mob">←<br>Previous</span>
+          </button>
+          <button class="btn btn-primary" id="btn-primary-action" onclick="handlePrimaryAction()">
+            <span class="lbl-desk">Save &amp; Next</span>
+            <span class="lbl-mob">Save &amp;<br>Next</span>
+          </button>
         </div>
       </div>
     </div>
@@ -4171,6 +4207,11 @@ function jumpToSection(secIdx) {
   if (firstIdx !== -1) navigateTo(firstIdx);
 }
 
+function setBtnDualLabel(btn, deskText, mobLine1, mobLine2) {
+  const mobHtml = mobLine2 ? (escHtml(mobLine1) + "<br>" + escHtml(mobLine2)) : escHtml(mobLine1);
+  btn.innerHTML = '<span class="lbl-desk">' + escHtml(deskText) + '</span><span class="lbl-mob">' + mobHtml + '</span>';
+}
+
 function updateActionButtons() {
   const st = qStates[currentIdx];
   const isFirst = (currentIdx === 0);
@@ -4189,7 +4230,8 @@ function updateActionButtons() {
 
   if (testMode === "instant") {
     if (locked) {
-      btnPrimary.textContent = isLast ? "Submit & View Report" : "Next Question →";
+      if (isLast) setBtnDualLabel(btnPrimary, "Submit & View Report", "Submit &", "Report");
+      else setBtnDualLabel(btnPrimary, "Next Question →", "Next", "Question →");
       btnPrimary.className = "btn btn-primary";
       btnClear.disabled = true;
       btnClear.style.opacity = "0.45";
@@ -4197,10 +4239,11 @@ function updateActionButtons() {
       btnReview.style.opacity = "0.45";
     } else {
       if (hasVal(st.selected)) {
-        btnPrimary.textContent = "Check Answer";
+        setBtnDualLabel(btnPrimary, "Check Answer", "Check", "Answer");
         btnPrimary.className = "btn btn-success";
       } else {
-        btnPrimary.textContent = isLast ? "Submit Test" : "Skip & Next";
+        if (isLast) setBtnDualLabel(btnPrimary, "Submit Test", "Submit", "Test");
+        else setBtnDualLabel(btnPrimary, "Skip & Next", "Skip &", "Next");
         btnPrimary.className = "btn btn-primary";
       }
       btnClear.disabled = false;
@@ -4210,10 +4253,11 @@ function updateActionButtons() {
     }
   } else {
     if (isLast) {
-      btnPrimary.textContent = hasVal(st.selected) ? "Save & Submit" : "Submit";
+      if (hasVal(st.selected)) setBtnDualLabel(btnPrimary, "Save & Submit", "Save &", "Submit");
+      else setBtnDualLabel(btnPrimary, "Submit", "Submit", "");
       btnPrimary.className = "btn btn-success";
     } else {
-      btnPrimary.textContent = "Save & Next";
+      setBtnDualLabel(btnPrimary, "Save & Next", "Save &", "Next");
       btnPrimary.className = "btn btn-primary";
     }
     btnClear.disabled = false;
