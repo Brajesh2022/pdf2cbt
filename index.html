@@ -1998,6 +1998,57 @@ Return ONLY valid JSON:
     color: #1a232c;
   }
 
+  .mob-sec-select {
+    display: none;
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.28);
+    border-radius: 4px;
+    padding: 5px 8px;
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    min-width: 0;
+    max-width: 195px;
+    text-overflow: ellipsis;
+  }
+  .mob-sec-select option {
+    background: #fff;
+    color: #1a232c;
+  }
+
+  .mob-timer {
+    display: none;
+    align-items: center;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #eef4fa;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    padding: 3px 7px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.09);
+  }
+  .mob-timer.low {
+    color: #ffd5d2;
+    background: rgba(217, 67, 43, 0.35);
+  }
+
+  .mob-mode-tag {
+    display: none;
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 3px;
+    background: #e7f4ea;
+    color: #1f6d3a;
+    border: 1px solid #b8dfc3;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
   .mobile-palette-btn {
     display: none;
     align-items: center;
@@ -2176,6 +2227,17 @@ Return ONLY valid JSON:
   .q-stem p { margin-bottom: 10px; }
   .q-stem p:last-child { margin-bottom: 0; }
 
+  .md-content {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+  .md-content .katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-width: 100%;
+    padding: 4px 0;
+  }
   .md-content table {
     border-collapse: collapse;
     margin: 12px 0;
@@ -2693,16 +2755,24 @@ Return ONLY valid JSON:
     display: none;
     height: 100dvh;
     overflow-y: auto;
+    overflow-x: hidden;
     background: #f0f3f6;
+  }
+  #result-screen .cbt-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
   }
 
   .result-wrap {
     max-width: 980px;
+    width: 100%;
     margin: 0 auto;
     padding: 20px 16px 40px;
     display: flex;
     flex-direction: column;
     gap: 16px;
+    min-width: 0;
   }
 
   .res-header {
@@ -2715,17 +2785,29 @@ Return ONLY valid JSON:
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 12px;
+    min-width: 0;
   }
 
-  .res-header h2 { font-size: 18px; font-weight: 600; }
+  .res-header h2 { font-size: 18px; font-weight: 600; word-break: break-word; }
+  .res-title-eyebrow {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--cbt-blue);
+    margin-bottom: 2px;
+    display: none;
+  }
   .res-sub { font-size: 13px; color: var(--cbt-muted); margin-top: 2px; }
 
-  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; width: 100%; }
   .kpi-card {
     background: #fff;
     border: 1px solid var(--cbt-border);
     border-radius: 4px;
     padding: 14px 16px;
+    min-width: 0;
+  }
+  .kpi-card.kpi-score {
+    border-top: 3px solid var(--cbt-blue);
   }
   .kpi-label {
     font-size: 12px;
@@ -2740,14 +2822,18 @@ Return ONLY valid JSON:
     margin-top: 4px;
     color: #1b242d;
     font-variant-numeric: tabular-nums;
+    line-height: 1.25;
+    word-break: break-word;
   }
-  .kpi-note { font-size: 12px; color: var(--cbt-muted); margin-top: 3px; }
+  .kpi-note { font-size: 12px; color: var(--cbt-muted); margin-top: 3px; word-break: break-word; }
 
   .panel {
     background: #fff;
     border: 1px solid var(--cbt-border);
     border-radius: 4px;
     overflow: hidden;
+    min-width: 0;
+    width: 100%;
   }
   .panel-head {
     padding: 11px 16px;
@@ -2761,8 +2847,8 @@ Return ONLY valid JSON:
     flex-wrap: wrap;
     gap: 8px;
   }
-  .panel-body { padding: 14px 16px; }
-  .table-scroll { overflow-x: auto; }
+  .panel-body { padding: 14px 16px; min-width: 0; }
+  .table-scroll { overflow-x: auto; max-width: 100%; -webkit-overflow-scrolling: touch; }
 
   .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
   .data-table th, .data-table td {
@@ -2773,6 +2859,53 @@ Return ONLY valid JSON:
   }
   .data-table th { background: #f5f7f9; font-weight: 600; color: #3a4652; }
   .data-table tr:last-child td { border-bottom: none; }
+
+  /* Mobile Subject-Wise Breakdown Cards (prevents Score column from hiding on small screens) */
+  .sec-mob-list {
+    display: none;
+    flex-direction: column;
+  }
+  .sec-mob-row {
+    padding: 11px 14px;
+    border-bottom: 1px solid #e5e9ed;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .sec-mob-row:last-child { border-bottom: none; }
+  .sec-mob-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .sec-mob-name {
+    font-weight: 700;
+    font-size: 13.5px;
+    color: #1b242d;
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+  .sec-mob-score {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1f5c92;
+    background: #e8f3fb;
+    border: 1px solid #c3dcf2;
+    padding: 2px 9px;
+    border-radius: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .sec-mob-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    font-size: 12px;
+    color: var(--cbt-muted);
+    font-variant-numeric: tabular-nums;
+  }
 
   /* Progress Line Chart across Attempts */
   .prog-chart-meta {
@@ -2789,7 +2922,7 @@ Return ONLY valid JSON:
   .prog-delta.up { color: #1e733c; }
   .prog-delta.down { color: #c03424; }
   .prog-svg-wrap { width: 100%; overflow-x: auto; }
-  .prog-svg { display: block; width: 100%; min-width: 320px; height: auto; }
+  .prog-svg { display: block; width: 100%; min-width: 0; height: auto; }
   .prog-dot { cursor: pointer; transition: r 0.12s; }
 
   /* Per-question Time Chart */
@@ -3075,11 +3208,28 @@ Return ONLY valid JSON:
   /* ==================== RESPONSIVE ==================== */
   @media (max-width: 860px) {
     .mode-grid { grid-template-columns: 1fr; }
-    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
     .sidebar-toggle { display: none; }
-    .mobile-palette-btn { display: inline-flex; }
+    .mobile-palette-btn { display: inline-flex; padding: 5px 9px; font-size: 12.5px; gap: 5px; }
     .top-link-btn.hide-sm { display: none; }
     .mob-extra-links { display: flex; }
+
+    /* Single sleek top bar on mobile exam console (saves ~80-100px vertical space) */
+    #exam-screen .cbt-topbar {
+      height: 44px;
+      padding: 0 10px;
+      gap: 8px;
+    }
+    #exam-screen .cbt-brand { display: none; }
+    #exam-screen .mob-sec-select { display: block; flex: 1; }
+    #exam-screen .mob-timer { display: inline-flex; }
+    #exam-screen .sections-bar { display: none; }
+    .mob-mode-tag.show { display: inline-block; }
+
+    .q-meta-bar { padding: 4px 12px; font-size: 11.5px; gap: 6px; }
+    .q-header { padding: 6px 12px; }
+    .q-number { font-size: 13.5px; }
+    .q-live-timer { font-size: 11.5px; }
 
     .right-sidebar {
       position: fixed;
@@ -3093,17 +3243,61 @@ Return ONLY valid JSON:
     }
     .right-sidebar.mobile-open { right: 0; }
 
-    .q-scroll { padding: 14px 14px 20px; }
-    .action-bar { padding: 8px 10px; flex-wrap: wrap; }
+    .q-scroll { padding: 11px 12px 16px; }
+    .q-stem { font-size: 14.5px; margin-bottom: 12px; }
+    .options-list { gap: 8px; }
+    .opt-item { padding: 9px 11px; gap: 9px; }
+    .action-bar { padding: 6px 9px; flex-wrap: wrap; gap: 6px; }
     .action-left, .action-right { gap: 6px; }
-    .action-bar .btn { padding: 8px 10px; font-size: 12.5px; }
+    .action-bar .btn { padding: 7px 10px; font-size: 12px; }
     .options-list.image-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+
+    /* Mobile Scorecard / Results topbar: show full attempt score in dropdown */
+    #result-screen .cbt-topbar {
+      height: 46px;
+      padding: 0 10px;
+      gap: 8px;
+    }
+    #result-screen .cbt-brand { display: none; }
+    #result-screen .top-actions {
+      width: 100%;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    #result-screen .top-select {
+      flex: 1;
+      min-width: 0;
+      max-width: none;
+      font-size: 12.5px;
+      padding: 5px 8px;
+    }
+    .res-title-eyebrow { display: block; }
+  }
+
+  @media (max-width: 640px) {
+    .result-wrap { padding: 12px 10px 32px; gap: 12px; }
+    .res-header { padding: 12px 14px; gap: 8px; }
+    .res-header h2 { font-size: 16px; }
+    .res-sub { font-size: 12px; }
+    .res-header-actions { display: none !important; }
+    .panel-head { padding: 10px 12px; font-size: 13.5px; }
+    .panel-body { padding: 12px; }
+    .sec-table-desktop { display: none; }
+    .sec-mob-list { display: flex; }
   }
 
   @media (max-width: 500px) {
     .options-list.image-grid, .rev-opts-list.image-grid { grid-template-columns: 1fr; }
-    .tc-row { grid-template-columns: 64px 1fr 64px; }
-    .top-select { max-width: 155px; font-size: 11.5px; }
+    .tc-row { grid-template-columns: 64px 1fr 56px; gap: 8px; font-size: 12px; }
+    .kpi-card { padding: 11px 12px; }
+    .kpi-label { font-size: 10.5px; }
+    .kpi-val { font-size: 20px; }
+    .kpi-note { font-size: 11.5px; }
+    .rev-body { padding: 11px 12px; font-size: 13.5px; }
+    .rev-ans-row { padding: 8px 10px; gap: 8px 12px; font-size: 12.5px; }
+    .rev-opt-toggle { margin-left: 0; width: 100%; justify-content: center; }
+    .action-left, .action-right { width: 100%; justify-content: space-between; }
+    .action-left .btn, .action-right .btn { flex: 1; text-align: center; }
   }
 </style>
 </head>
@@ -3187,10 +3381,12 @@ Return ONLY valid JSON:
       <span class="cbt-brand-title">${safeTitle}</span>
       <span class="cbt-tag" id="exam-attempt-tag">Attempt #1</span>
     </div>
+    <select class="mob-sec-select" id="mob-sec-select" onchange="jumpToSection(Number(this.value))" aria-label="Select subject"></select>
     <div class="top-actions">
       <button class="top-link-btn hide-sm" onclick="openQuestionPaper()">Question Paper</button>
       <button class="top-link-btn hide-sm" onclick="openModal('instructions-modal')">Instructions</button>
       <button class="top-link-btn hide-sm" onclick="openModal('restart-modal')">Restart</button>
+      <span class="mob-timer" id="mob-timer" aria-label="Time remaining">00:00</span>
       <button class="mobile-palette-btn" onclick="toggleMobileDrawer(true)" aria-label="Open Question Palette">
         <svg width="16" height="16" viewBox="0 0 18 18" fill="currentColor" aria-hidden="true">
           <rect x="1" y="1" width="4.2" height="4.2" rx="0.9"/>
@@ -3220,7 +3416,7 @@ Return ONLY valid JSON:
       </div>
 
       <div class="q-meta-bar">
-        <span>Question Type: <strong id="q-type-label">MCQ</strong></span>
+        <span>Question Type: <strong id="q-type-label">MCQ</strong><span class="mob-mode-tag" id="mob-mode-tag"></span></span>
         <div class="q-marks">
           <span>Marks: <span class="mark-pos" id="q-mark-pos">+4</span></span>
           <span>Negative: <span class="mark-neg" id="q-mark-neg">-1</span></span>
@@ -3820,12 +4016,21 @@ function enterExamConsole(isResume) {
   document.getElementById("exam-attempt-tag").textContent = "Attempt #" + (store.attempts.length + 1);
 
   const badge = document.getElementById("console-mode-badge");
+  const mobModeTag = document.getElementById("mob-mode-tag");
   if (testMode === "instant") {
     badge.textContent = "Instant Check Mode";
     badge.className = "mode-badge";
+    if (mobModeTag) {
+      mobModeTag.textContent = "Instant";
+      mobModeTag.classList.add("show");
+    }
   } else {
     badge.textContent = "Standard Exam Mode";
     badge.className = "mode-badge exam";
+    if (mobModeTag) {
+      mobModeTag.textContent = "";
+      mobModeTag.classList.remove("show");
+    }
   }
 
   document.getElementById("start-screen").style.display = "none";
@@ -3883,9 +4088,16 @@ function confirmRestartTest() {
 
 function updateTimersUI() {
   const timerEl = document.getElementById("global-timer");
+  const mobTimerEl = document.getElementById("mob-timer");
   const lowThresh = Math.min(300, Math.max(60, Math.floor(TOTAL_EXAM_SECONDS * 0.15)));
-  timerEl.textContent = "Time Left: " + formatClock(remainingSec);
-  timerEl.classList.toggle("low", remainingSec <= lowThresh);
+  const clockStr = formatClock(remainingSec);
+  const isLow = remainingSec <= lowThresh;
+  timerEl.textContent = "Time Left: " + clockStr;
+  timerEl.classList.toggle("low", isLow);
+  if (mobTimerEl) {
+    mobTimerEl.textContent = clockStr;
+    mobTimerEl.classList.toggle("low", isLow);
+  }
 
   const st = qStates[currentIdx];
   const qTimerEl = document.getElementById("q-live-timer");
@@ -3931,15 +4143,27 @@ function renderAll(resetScroll = false) {
 function renderSectionTabs() {
   const activeSecIdx = QUESTIONS[currentIdx].sec;
   const wrap = document.getElementById("section-tabs");
-  wrap.innerHTML = SECTIONS.map((sec, sIdx) => {
+  const mobSel = document.getElementById("mob-sec-select");
+  const secStats = SECTIONS.map((sec, sIdx) => {
     const idxs = QUESTIONS.map((q, i) => q.sec === sIdx ? i : -1).filter(i => i >= 0);
     const answeredInSec = idxs.filter(i => hasVal(qStates[i].savedAnswer)).length;
-    const isAct = sIdx === activeSecIdx;
-    return '<button class="sec-tab ' + (isAct ? 'active' : '') + '" onclick="jumpToSection(' + sIdx + ')">' +
+    return { sec, sIdx, answeredInSec, total: idxs.length, isAct: sIdx === activeSecIdx };
+  });
+
+  wrap.innerHTML = secStats.map(({ sec, sIdx, answeredInSec, total, isAct }) =>
+    '<button class="sec-tab ' + (isAct ? 'active' : '') + '" onclick="jumpToSection(' + sIdx + ')">' +
       '<span>' + escHtml(sec.name) + '</span>' +
-      '<span class="sec-count">' + answeredInSec + '/' + idxs.length + '</span>' +
-      '</button>';
-  }).join("");
+      '<span class="sec-count">' + answeredInSec + '/' + total + '</span>' +
+    '</button>'
+  ).join("");
+
+  if (mobSel) {
+    mobSel.innerHTML = secStats.map(({ sec, sIdx, answeredInSec, total, isAct }) =>
+      '<option value="' + sIdx + '"' + (isAct ? ' selected' : '') + '>' +
+        escHtml(sec.name) + ' (' + answeredInSec + '/' + total + ')' +
+      '</option>'
+    ).join("");
+  }
 }
 
 function jumpToSection(secIdx) {
@@ -4575,7 +4799,9 @@ function finalizeExam() {
 function showResultsScreen() {
   document.getElementById("start-screen").style.display = "none";
   document.getElementById("exam-screen").style.display = "none";
-  document.getElementById("result-screen").style.display = "block";
+  const rs = document.getElementById("result-screen");
+  rs.style.display = "block";
+  rs.scrollTop = 0;
   currentReviewFilter = "all";
   renderAttemptDropdown();
   renderResults();
@@ -4608,6 +4834,8 @@ function selectAttemptIndex(idx) {
     currentReviewFilter = "all";
     renderAttemptDropdown();
     renderResults();
+    const rs = document.getElementById("result-screen");
+    if (rs) rs.scrollTop = 0;
   });
 }
 
@@ -4764,7 +4992,7 @@ function renderResults() {
   const ev = evaluateStates(attempt.qStates || []);
   const maxQTime = Math.max(10, ...ev.perQ.map(x => x.st.timeSpent));
 
-  const secRows = SECTIONS.map((sec, sIdx) => {
+  const secData = SECTIONS.map((sec, sIdx) => {
     const items = ev.perQ.filter(x => x.q.sec === sIdx);
     const c = items.filter(x => x.outcome === "correct").length;
     const w = items.filter(x => x.outcome === "wrong").length;
@@ -4774,20 +5002,40 @@ function renderResults() {
     const mx = items.filter(x => x.keyed).reduce((a, b) => a + Number(b.q.pos || 0), 0);
     const t = items.reduce((a, b) => a + b.st.timeSpent, 0);
     const avg = items.length ? t / items.length : 0;
-    const scoreCell = HAS_ANSWER_KEY
-      ? ("<strong>" + fmtNum(sc) + " / " + fmtNum(mx) + "</strong>")
-      : ("<strong>" + (items.length - sk) + " / " + items.length + "</strong>");
+    const scoreTxt = HAS_ANSWER_KEY
+      ? (fmtNum(sc) + " / " + fmtNum(mx))
+      : ((items.length - sk) + " / " + items.length);
+    return { sec, c, w, sk, rec, t, avg, scoreTxt };
+  });
 
-    return '<tr>' +
-      '<td><strong>' + escHtml(sec.name) + '</strong></td>' +
-      '<td style="color:#1e733c; font-weight:600;">' + (HAS_ANSWER_KEY ? c : rec) + '</td>' +
-      '<td style="color:#c03424; font-weight:600;">' + (HAS_ANSWER_KEY ? w : "—") + '</td>' +
-      '<td>' + sk + '</td>' +
-      '<td>' + scoreCell + '</td>' +
-      '<td>' + formatSec(t) + '</td>' +
-      '<td>' + formatSec(avg) + '</td>' +
-    '</tr>';
-  }).join("");
+  const secRows = secData.map(d =>
+    '<tr>' +
+      '<td><strong>' + escHtml(d.sec.name) + '</strong></td>' +
+      '<td><strong>' + d.scoreTxt + '</strong></td>' +
+      '<td style="color:#1e733c; font-weight:600;">' + (HAS_ANSWER_KEY ? d.c : d.rec) + '</td>' +
+      '<td style="color:#c03424; font-weight:600;">' + (HAS_ANSWER_KEY ? d.w : "—") + '</td>' +
+      '<td>' + d.sk + '</td>' +
+      '<td>' + formatSec(d.t) + '</td>' +
+      '<td>' + formatSec(d.avg) + '</td>' +
+    '</tr>'
+  ).join("");
+
+  const secMobRows = secData.map(d =>
+    '<div class="sec-mob-row">' +
+      '<div class="sec-mob-top">' +
+        '<span class="sec-mob-name">' + escHtml(d.sec.name) + '</span>' +
+        '<span class="sec-mob-score">' + (HAS_ANSWER_KEY ? 'Score: ' : 'Done: ') + d.scoreTxt + '</span>' +
+      '</div>' +
+      '<div class="sec-mob-stats">' +
+        (HAS_ANSWER_KEY
+          ? '<span style="color:#1e733c; font-weight:600;">✓ ' + d.c + ' Correct</span>' +
+            '<span style="color:#c03424; font-weight:600;">✕ ' + d.w + ' Wrong</span>'
+          : '<span style="color:#1e733c; font-weight:600;">✓ ' + d.rec + ' Answered</span>') +
+        '<span>– ' + d.sk + ' Skipped</span>' +
+        '<span>' + formatSec(d.t) + ' (' + formatSec(d.avg) + '/Q)</span>' +
+      '</div>' +
+    '</div>'
+  ).join("");
 
   const avgLinePct = Math.min(100, (ev.avgTimeAll / maxQTime) * 100);
   const chartRows = ev.perQ.map(({ q, st, outcome }) => {
@@ -4804,12 +5052,12 @@ function renderResults() {
   }).join("");
 
   const kpiScoreCard = HAS_ANSWER_KEY
-    ? '<div class="kpi-card">' +
+    ? '<div class="kpi-card kpi-score">' +
         '<div class="kpi-label">Total Score</div>' +
         '<div class="kpi-val">' + fmtNum(ev.score) + ' <span style="font-size:14px; font-weight:500; color:var(--cbt-muted);">/ ' + fmtNum(ev.maxMarks) + '</span></div>' +
         '<div class="kpi-note">+' + fmtNum(ev.earnedMarks) + ' earned, ' + (ev.lostMarks > 0 ? ('-' + fmtNum(ev.lostMarks)) : '0') + ' negative</div>' +
       '</div>'
-    : '<div class="kpi-card">' +
+    : '<div class="kpi-card kpi-score">' +
         '<div class="kpi-label">Attempted</div>' +
         '<div class="kpi-val">' + ev.attempted + ' <span style="font-size:14px; font-weight:500; color:var(--cbt-muted);">/ ' + ev.totalQ + '</span></div>' +
         '<div class="kpi-note">Practice mode (no answer key)</div>' +
@@ -4846,11 +5094,12 @@ function renderResults() {
   const content = document.getElementById("result-content");
   content.innerHTML =
     '<div class="res-header">' +
-      '<div>' +
+      '<div style="min-width:0;">' +
+        '<div class="res-title-eyebrow">' + escHtml(DATA.title || "CBT Mock Test") + '</div>' +
         '<h2>' + escHtml(attempt.candidateName || "Candidate") + ' — Score Report</h2>' +
         '<div class="res-sub">' + escHtml(subMeta) + '</div>' +
       '</div>' +
-      '<div style="display:flex; gap:8px;">' +
+      '<div class="res-header-actions" style="display:flex; gap:8px;">' +
         '<button class="btn btn-primary" onclick="openReattempt()">Re-attempt Test</button>' +
       '</div>' +
     '</div>' +
@@ -4878,20 +5127,21 @@ function renderResults() {
 
     '<div class="panel">' +
       '<div class="panel-head">Subject-Wise Breakdown</div>' +
-      '<div class="table-scroll">' +
+      '<div class="table-scroll sec-table-desktop">' +
         '<table class="data-table">' +
           '<thead><tr>' +
             '<th>Subject</th>' +
+            '<th>' + (HAS_ANSWER_KEY ? 'Score' : 'Done') + '</th>' +
             '<th>' + (HAS_ANSWER_KEY ? 'Correct' : 'Answered') + '</th>' +
             '<th>Incorrect</th>' +
             '<th>Skipped</th>' +
-            '<th>' + (HAS_ANSWER_KEY ? 'Score' : 'Done') + '</th>' +
             '<th>Total Time</th>' +
             '<th>Avg / Q</th>' +
           '</tr></thead>' +
           '<tbody>' + secRows + '</tbody>' +
         '</table>' +
       '</div>' +
+      '<div class="sec-mob-list">' + secMobRows + '</div>' +
     '</div>' +
 
     '<div class="panel">' +
