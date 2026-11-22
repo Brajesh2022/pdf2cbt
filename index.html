@@ -1693,14 +1693,31 @@ Return ONLY valid JSON:
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
+  html {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     color: var(--cbt-text);
     background: var(--cbt-bg);
+    width: 100%;
+    max-width: 100%;
     height: 100dvh;
     overflow: hidden;
     font-size: 14px;
     line-height: 1.5;
+  }
+
+  body.doc-scroll {
+    height: auto;
+    min-height: 100dvh;
+    overflow-y: auto;
+    overflow-x: clip;
   }
 
   button {
@@ -1712,8 +1729,9 @@ Return ONLY valid JSON:
 
   /* ==================== START SCREEN ==================== */
   #start-screen {
-    height: 100dvh;
-    overflow-y: auto;
+    min-height: 100dvh;
+    width: 100%;
+    max-width: 100%;
     display: flex;
     flex-direction: column;
     background: #f0f3f6;
@@ -2252,7 +2270,16 @@ Return ONLY valid JSON:
   .md-content {
     min-width: 0;
     max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
     overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  .md-content svg,
+  .md-content img {
+    max-width: 100% !important;
+    height: auto !important;
   }
   .md-content .katex-display {
     overflow-x: auto;
@@ -2775,15 +2802,18 @@ Return ONLY valid JSON:
   /* ==================== RESULT SCREEN ==================== */
   #result-screen {
     display: none;
-    height: 100dvh;
-    overflow-y: auto;
-    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+    min-height: 100dvh;
+    overflow-x: clip;
     background: #f0f3f6;
   }
   #result-screen .cbt-topbar {
     position: sticky;
     top: 0;
     z-index: 20;
+    width: 100%;
+    max-width: 100%;
   }
 
   .result-wrap {
@@ -2846,6 +2876,23 @@ Return ONLY valid JSON:
     font-variant-numeric: tabular-nums;
     line-height: 1.25;
     word-break: break-word;
+  }
+  .kpi-val-score {
+    display: inline-flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px;
+    white-space: nowrap;
+    word-break: normal;
+  }
+  .kpi-main-num {
+    color: #1b242d;
+    font-weight: 700;
+  }
+  .kpi-denom {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--cbt-muted);
   }
   .kpi-note { font-size: 12px; color: var(--cbt-muted); margin-top: 3px; word-break: break-word; }
 
@@ -2946,9 +2993,37 @@ Return ONLY valid JSON:
   .prog-svg-wrap { width: 100%; overflow-x: auto; }
   .prog-svg { display: block; width: 100%; min-width: 0; height: auto; }
   .prog-dot { cursor: pointer; transition: r 0.12s; }
+  .prog-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .prog-chip {
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 4px 9px;
+    border-radius: 12px;
+    border: 1px solid #cdd6df;
+    background: #f6f9fc;
+    color: #344250;
+    font-variant-numeric: tabular-nums;
+  }
+  .prog-chip.active {
+    background: var(--cbt-blue);
+    border-color: var(--cbt-blue);
+    color: #fff;
+  }
 
   /* Per-question Time Chart */
-  .time-chart { display: flex; flex-direction: column; gap: 9px; }
+  .time-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    max-height: 360px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
   .tc-row {
     display: grid;
     grid-template-columns: 80px 1fr 78px;
@@ -3008,8 +3083,8 @@ Return ONLY valid JSON:
   }
   .fpill.active { background: var(--cbt-blue); border-color: var(--cbt-blue); color: #fff; }
 
-  .review-list { display: flex; flex-direction: column; gap: 12px; }
-  .rev-card { border: 1px solid #d8dee4; border-radius: 4px; overflow: hidden; }
+  .review-list { display: flex; flex-direction: column; gap: 12px; min-width: 0; max-width: 100%; }
+  .rev-card { border: 1px solid #d8dee4; border-radius: 4px; overflow: hidden; min-width: 0; max-width: 100%; }
   .rev-head {
     padding: 9px 14px;
     background: #f8fafc;
@@ -3027,7 +3102,7 @@ Return ONLY valid JSON:
   .badge-skipped { background: #edf0f3; color: #52606d; }
   .badge-recorded { background: #e8f3fb; color: #205c92; }
 
-  .rev-body { padding: 13px 15px; font-size: 14px; }
+  .rev-body { padding: 13px 15px; font-size: 14px; min-width: 0; max-width: 100%; overflow-wrap: break-word; }
   .rev-ans-row {
     display: flex;
     flex-wrap: wrap;
@@ -3124,8 +3199,10 @@ Return ONLY valid JSON:
     background: #f4fbf6;
     border-radius: 3px;
     font-size: 13.5px;
-    display: inline-block;
+    display: block;
+    width: fit-content;
     max-width: 100%;
+    overflow-x: auto;
   }
   .rev-opt-preview p { margin: 0; }
   .rev-exp {
@@ -3134,6 +3211,9 @@ Return ONLY valid JSON:
     border-left: 3px solid var(--cbt-blue);
     padding-left: 10px;
     margin-top: 8px;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
   }
 
   /* ==================== MODALS, LIGHTBOX & LOADING ==================== */
@@ -4091,6 +4171,8 @@ function enterExamConsole(isResume) {
     }
   }
 
+  document.body.classList.remove("doc-scroll");
+  window.scrollTo(0, 0);
   document.getElementById("start-screen").style.display = "none";
   document.getElementById("result-screen").style.display = "none";
   document.getElementById("exam-screen").style.display = "flex";
@@ -4875,12 +4957,13 @@ function finalizeExam() {
 function showResultsScreen() {
   document.getElementById("start-screen").style.display = "none";
   document.getElementById("exam-screen").style.display = "none";
+  document.body.classList.add("doc-scroll");
   const rs = document.getElementById("result-screen");
   rs.style.display = "block";
-  rs.scrollTop = 0;
   currentReviewFilter = "all";
   renderAttemptDropdown();
   renderResults();
+  window.scrollTo(0, 0);
 }
 
 function renderAttemptDropdown() {
@@ -4897,7 +4980,7 @@ function renderAttemptDropdown() {
       : (a.attempted + "/" + QUESTIONS.length + " ans");
     const tag = idx === lastIdx ? " (Latest)" : "";
     return '<option value="' + idx + '"' + (idx === viewedAttemptIdx ? ' selected' : '') + '>' +
-      'Attempt #' + a.attemptNo + tag + ' — ' + scoreLbl +
+      '#' + a.attemptNo + tag + ' • ' + scoreLbl +
     '</option>';
   }).reverse().join("");
 }
@@ -4910,8 +4993,7 @@ function selectAttemptIndex(idx) {
     currentReviewFilter = "all";
     renderAttemptDropdown();
     renderResults();
-    const rs = document.getElementById("result-screen");
-    if (rs) rs.scrollTop = 0;
+    window.scrollTo(0, 0);
   });
 }
 
@@ -4960,9 +5042,9 @@ function buildProgressChartHtml() {
     ? ("Best: " + fmtNum(bestVal) + " / " + fmtNum(store.attempts[0].maxMarks))
     : (metric === "accuracy" ? ("Best: " + fmtNum(bestVal) + "%") : ("Fastest avg: " + formatSec(bestVal) + "/Q"));
 
-  // SVG Coordinate System
-  const W = 720, H = 225;
-  const padL = 48, padR = 26, padT = 26, padB = 34;
+  // SVG Coordinate System (sized so text remains crisp on narrow mobile screens)
+  const W = 540, H = 215;
+  const padL = 44, padR = 24, padT = 26, padB = 32;
   const plotW = W - padL - padR;
   const plotH = H - padT - padB;
 
@@ -4991,7 +5073,7 @@ function buildProgressChartHtml() {
     const lbl = metric === "accuracy" ? (Math.round(val) + "%") : (metric === "time" ? (Math.round(val) + "s") : fmtNum(val));
     gridSvg +=
       '<line x1="' + padL + '" y1="' + y.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + y.toFixed(1) + '" stroke="#e5e9ef" stroke-width="1"/>' +
-      '<text x="' + (padL - 8) + '" y="' + (y + 4).toFixed(1) + '" text-anchor="end" font-size="11" fill="#6b7785">' + lbl + '</text>';
+      '<text x="' + (padL - 8) + '" y="' + (y + 4).toFixed(1) + '" text-anchor="end" font-size="12" fill="#6b7785">' + lbl + '</text>';
   }
 
   // Zero baseline if negative scores exist
@@ -5008,7 +5090,7 @@ function buildProgressChartHtml() {
 
   const xLabelsSvg = pts.map(p => {
     const isSel = p.idx === viewedAttemptIdx;
-    return '<text x="' + p.x.toFixed(1) + '" y="' + (H - 10) + '" text-anchor="middle" font-size="11" font-weight="' + (isSel ? '700' : '500') + '" fill="' + (isSel ? '#286090' : '#5f6b77') + '" style="cursor:pointer;" onclick="selectAttemptIndex(' + p.idx + ')">#' + p.a.attemptNo + '</text>';
+    return '<text x="' + p.x.toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="12" font-weight="' + (isSel ? '700' : '500') + '" fill="' + (isSel ? '#286090' : '#5f6b77') + '" style="cursor:pointer;" onclick="selectAttemptIndex(' + p.idx + ')">#' + p.a.attemptNo + '</text>';
   }).join("");
 
   const dotsSvg = pts.map(p => {
@@ -5020,11 +5102,19 @@ function buildProgressChartHtml() {
 
     return '<g class="prog-dot" onclick="selectAttemptIndex(' + p.idx + ')">' +
       '<title>' + escHtml(tip) + '</title>' +
-      '<circle cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="14" fill="transparent"/>' +
-      (isSel ? '<circle cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="9" fill="rgba(51,122,183,0.18)"/>' : '') +
-      '<circle cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="' + (isSel ? 5.5 : 4.2) + '" fill="' + (isSel ? '#286090' : '#337ab7') + '" stroke="#fff" stroke-width="2"/>' +
-      '<text x="' + p.x.toFixed(1) + '" y="' + Math.max(14, p.y - 10).toFixed(1) + '" text-anchor="middle" font-size="11" font-weight="' + (isSel ? '700' : '600') + '" fill="' + (isSel ? '#1a232c' : '#4a5562') + '">' + valTxt + '</text>' +
+      '<circle cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="16" fill="transparent"/>' +
+      (isSel ? '<circle cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="10" fill="rgba(51,122,183,0.18)"/>' : '') +
+      '<circle cx="' + p.x.toFixed(1) + '" cy="' + p.y.toFixed(1) + '" r="' + (isSel ? 6 : 4.5) + '" fill="' + (isSel ? '#286090' : '#337ab7') + '" stroke="#fff" stroke-width="2"/>' +
+      '<text x="' + p.x.toFixed(1) + '" y="' + Math.max(16, p.y - 12).toFixed(1) + '" text-anchor="middle" font-size="13" font-weight="' + (isSel ? '700' : '600') + '" fill="' + (isSel ? '#1a232c' : '#4a5562') + '">' + valTxt + '</text>' +
     '</g>';
+  }).join("");
+
+  const attemptChips = pts.map(p => {
+    const isSel = p.idx === viewedAttemptIdx;
+    const valTxt = metric === "score"
+      ? (fmtNum(p.a.score) + "/" + fmtNum(p.a.maxMarks))
+      : (metric === "accuracy" ? (fmtNum(p.v) + "%") : formatSec(p.v));
+    return '<button type="button" class="prog-chip' + (isSel ? ' active' : '') + '" onclick="selectAttemptIndex(' + p.idx + ')">#' + p.a.attemptNo + ': ' + valTxt + '</button>';
   }).join("");
 
   const metricTabs = (HAS_ANSWER_KEY
@@ -5041,7 +5131,7 @@ function buildProgressChartHtml() {
     '<div class="panel-body">' +
       '<div class="prog-chart-meta">' +
         '<span class="' + deltaCls + '">' + escHtml(deltaStr) + '</span>' +
-        '<span>' + escHtml(bestLabel) + ' · Click any point to inspect that attempt</span>' +
+        '<span>' + escHtml(bestLabel) + ' · Tap any attempt to inspect</span>' +
       '</div>' +
       '<div class="prog-svg-wrap">' +
         '<svg class="prog-svg" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Progress chart across attempts">' +
@@ -5052,11 +5142,12 @@ function buildProgressChartHtml() {
           gridSvg +
           zeroLine +
           '<path d="' + areaPath + '" fill="url(#progGrad)" pointer-events="none"/>' +
-          '<path d="' + linePath + '" fill="none" stroke="#337ab7" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" pointer-events="none"/>' +
+          '<path d="' + linePath + '" fill="none" stroke="#337ab7" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" pointer-events="none"/>' +
           xLabelsSvg +
           dotsSvg +
         '</svg>' +
       '</div>' +
+      '<div class="prog-chips">' + attemptChips + '</div>' +
     '</div>' +
   '</div>';
 }
@@ -5130,12 +5221,12 @@ function renderResults() {
   const kpiScoreCard = HAS_ANSWER_KEY
     ? '<div class="kpi-card kpi-score">' +
         '<div class="kpi-label">Total Score</div>' +
-        '<div class="kpi-val">' + fmtNum(ev.score) + ' <span style="font-size:14px; font-weight:500; color:var(--cbt-muted);">/ ' + fmtNum(ev.maxMarks) + '</span></div>' +
+        '<div class="kpi-val kpi-val-score"><span class="kpi-main-num">' + fmtNum(ev.score) + '</span><span class="kpi-denom">/ ' + fmtNum(ev.maxMarks) + '</span></div>' +
         '<div class="kpi-note">+' + fmtNum(ev.earnedMarks) + ' earned, ' + (ev.lostMarks > 0 ? ('-' + fmtNum(ev.lostMarks)) : '0') + ' negative</div>' +
       '</div>'
     : '<div class="kpi-card kpi-score">' +
         '<div class="kpi-label">Attempted</div>' +
-        '<div class="kpi-val">' + ev.attempted + ' <span style="font-size:14px; font-weight:500; color:var(--cbt-muted);">/ ' + ev.totalQ + '</span></div>' +
+        '<div class="kpi-val kpi-val-score"><span class="kpi-main-num">' + ev.attempted + '</span><span class="kpi-denom">/ ' + ev.totalQ + '</span></div>' +
         '<div class="kpi-note">Practice mode (no answer key)</div>' +
       '</div>';
 
@@ -5376,8 +5467,8 @@ function renderReviewCards(filter) {
     }
 
     const qImgsHtml = (q.imgs && q.imgs.length)
-      ? '<div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;">' +
-          q.imgs.map(imgItem => '<img src="' + imgSrc(imgItem) + '" style="max-width:260px; max-height:200px; border:1px solid #dce2e8; padding:4px; cursor:zoom-in;" onclick="openLightbox(this.src)">').join("") +
+      ? '<div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; max-width:100%;">' +
+          q.imgs.map(imgItem => '<img src="' + imgSrc(imgItem) + '" style="max-width:min(260px, 100%); max-height:200px; height:auto; border:1px solid #dce2e8; padding:4px; cursor:zoom-in;" onclick="openLightbox(this.src)">').join("") +
         '</div>'
       : "";
 
@@ -5409,9 +5500,11 @@ function openReattempt() {
   clearInterval(tickInterval);
   examFinished = false;
   refreshStartScreenHistoryControls();
+  document.body.classList.add("doc-scroll");
   document.getElementById("result-screen").style.display = "none";
   document.getElementById("exam-screen").style.display = "none";
   document.getElementById("start-screen").style.display = "flex";
+  window.scrollTo(0, 0);
 }
 
 function showResultsFromStart() {
@@ -5450,6 +5543,7 @@ function bootApp() {
     return;
   }
 
+  document.body.classList.add("doc-scroll");
   document.getElementById("start-screen").style.display = "flex";
 }
 
